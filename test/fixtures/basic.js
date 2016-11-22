@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 class TestComponent extends React.Component {
     render() {
-        return template();
+        return template.call(this);
     }
 }
 

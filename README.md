@@ -7,7 +7,7 @@ import template from './hello.jsx';
 
 class HelloMessage extends React.Component {
   render() {
-    return template();
+    return template.call(this);
   }
 }
 ```
