@@ -25,7 +25,7 @@ function index(opts) {
 
         transform: function transform(code, id) {
             if (filter(id)) {
-                code = "function template() { return " + code + " };";
+                code = "function template() { return " + code.trim() + " };";
                 return {
                     code: ((header ? header + "\n\n" : "") + "export default " + code),
                     map: { mappings: '' },
