@@ -3,11 +3,14 @@
   "version": "1.0.3",
   "description": "Converts JSX files to modules",
   "main": "dist/rollup-plugin-external-jsx.js",
+  "module": "dist/rollup-plugin-external-jsx.mjs",
   "jsnext:main": "dist/rollup-plugin-external-jsx.mjs",
   "files": [
     "dist"
   ],
   "dependencies": {
+    "acorn-jsx": "^4.1.1",
+    "magic-string": "^0.22.4",
     "rollup-pluginutils": "^1.5.0"
   },
   "devDependencies": {

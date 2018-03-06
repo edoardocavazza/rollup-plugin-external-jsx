@@ -10,9 +10,11 @@ class TestComponent extends React.Component {
 
 ReactDOM.render(<TestComponent />, document.querySelector('.wrapper'));
 
-let sections = Object.keys(document.querySelectorAll('section')).length;
-let articles = Object.keys(document.querySelectorAll('article')).length;
+let sections = document.querySelectorAll('section');
+let articles = document.querySelectorAll('article');
 
 assert.equal(typeof template, 'function');
-assert.equal(sections, 1);
-assert.equal(articles, 2);
+assert.equal(sections.length, 1);
+assert.equal(articles.length, 2);
+assert.equal(articles[0].textContent, 'Article 1');
+assert.equal(articles[1].textContent, 'Article 2');
