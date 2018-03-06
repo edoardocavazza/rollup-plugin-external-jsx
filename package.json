@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-external-jsx",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Converts JSX files to modules",
   "main": "dist/rollup-plugin-external-jsx.js",
   "module": "dist/rollup-plugin-external-jsx.mjs",

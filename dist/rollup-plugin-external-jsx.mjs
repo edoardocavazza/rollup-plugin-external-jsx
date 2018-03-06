@@ -1,4 +1,6 @@
 import { createFilter } from 'rollup-pluginutils';
+import acorn from 'acorn-jsx';
+import MagicString from 'magic-string';
 
 function assign(target, source) {
     Object.keys(source).forEach(function(key) {
@@ -16,6 +18,7 @@ function index(opts) {
     }
     var filter = createFilter(opts.include, opts.exclude || []);
     var header = opts.header !== undefined ? opts.header : DEFAULT_HEADER;
+    var sourceMap = opts.sourceMap !== false;
     delete opts.header;
     delete opts.include;
     delete opts.exclude;
@@ -25,10 +28,31 @@ function index(opts) {
 
         transform: function transform(code, id) {
             if (filter(id)) {
-                code = "function template() { return " + code.trim() + " };";
+                var magicString = new MagicString( code );
+                var ast = acorn.parse(code, {
+                    sourceType: 'module',
+                    plugins: { jsx: true }
+                });
+
+                ast.body.forEach(function (node) {
+                    if (node.type === 'ExpressionStatement' && node.expression.type === 'JSXElement') {
+                        var JSX = magicString.slice(node.start, node.end);
+                        magicString.overwrite(node.start, node.end, ("export default function() { return " + JSX + " }"));
+                    }
+                });
+
+                magicString.trim();
+
+                if (header) {
+                    magicString.prepend(header).trim();
+                }
+
+                code = magicString.toString();
+                var map = sourceMap ? magicString.generateMap() : null;
+
                 return {
-                    code: ((header ? header + "\n\n" : "") + "export default " + code),
-                    map: { mappings: '' },
+                    code: code,
+                    map: map,
                 };
             }
         }
