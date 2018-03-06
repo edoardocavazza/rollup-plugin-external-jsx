@@ -34,10 +34,11 @@ export default function(opts) {
                     plugins: { jsx: true }
                 });
 
-                ast.body.forEach((node) => {
-                    if (node.type === 'ExpressionStatement' && node.expression.type === 'JSXElement') {
+                ast.body.reverse().find((node) => {
+                    if (node.type === 'ExpressionStatement') {
                         const JSX = magicString.slice(node.start, node.end);
                         magicString.overwrite(node.start, node.end, `export default function() { return ${JSX} }`);
+                        return true;
                     }
                 });
 
